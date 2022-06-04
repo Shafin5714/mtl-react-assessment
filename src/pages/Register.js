@@ -1,37 +1,55 @@
 import React, { useState, useEffect } from "react";
+
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {useNavigate} from 'react-router-dom'
-import {useSelector,useDispatch} from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 // Actions
-import {register} from '../Redux/User/userActions'
-
-
+import { register } from "../Redux/User/userActions";
 
 export default function Register() {
-  const dispatch = useDispatch()
-  const history = useNavigate()
+  const dispatch = useDispatch();
+  const history = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const userRegister = useSelector(state=>state.userRegister)
-  const {userInfo} = userRegister
+  const userRegister = useSelector((state) => state.userRegister);
+  const { userInfo } = userRegister;
+  const [errors, setError] = useState({
+    email: "",
+    password: "",
+  });
 
-
-
-  useEffect(()=>{
-    if(userInfo){
-        history('/')
+  useEffect(() => {
+    if (userInfo) {
+      history("/");
     }
-
-},[userInfo])
+  }, [userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    dispatch(register(email, password));
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!email) {
+      setError((prevState) => ({
+        ...prevState,
+        email: "Email is required!",
+      }));
+    }
+    if (!password) {
+      setError((prevState) => ({
+        ...prevState,
+        password: "Password is required!",
+      }));
+    } else if (!regex.test(email)) {
+      setError((prevState) => ({
+        ...prevState,
+        email: "This is not a valid email format!",
+      }));
+    } else {
+      dispatch(register(email, password));
+    }
   };
   return (
     <Container>
@@ -46,6 +64,7 @@ export default function Register() {
           <form onSubmit={submitHandler}>
             <Box my={3}>
               <TextField
+                error={errors.email}
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
@@ -53,10 +72,12 @@ export default function Register() {
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                helperText={errors.email}
               />
             </Box>
             <Box my={2}>
               <TextField
+               error={errors.password}
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
@@ -65,6 +86,7 @@ export default function Register() {
                 value={password}
                 placeholder="Enter Password"
                 onChange={(e) => setPassword(e.target.value)}
+                helperText={errors.password}
               />
             </Box>
             <Box mt={4}>
@@ -73,6 +95,7 @@ export default function Register() {
               </Button>
             </Box>
           </form>
+      
         </Box>
       </Box>
     </Container>

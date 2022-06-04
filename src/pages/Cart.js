@@ -5,11 +5,13 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useSelector, useDispatch } from "react-redux";
+import { ORDER_SUCCESS } from "../Redux/Cart/cartConstants";
 // Actins
 import { removeFromCart } from "../Redux/Cart/cartActions";
 import { incrementItem, decrementItem } from "../Redux/Cart/cartActions";
@@ -26,6 +28,14 @@ export default function Cart() {
       history("/login");
     }
   }, [userInfo]);
+
+  //   checkout
+  const handleCheckout = () => {
+    history("/success");
+    dispatch({
+      type: ORDER_SUCCESS,
+    });
+  };
 
   return (
     <Container>
@@ -85,6 +95,16 @@ export default function Cart() {
               </span>{" "}
             </Typography>
           </Box>
+        </Box>
+        <Box my={2} py={2} display="flex" justifyContent="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleCheckout}
+            disabled={cartItems.length=== 0}
+          >
+            Checkout
+          </Button>
         </Box>
       </Box>
     </Container>

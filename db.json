@@ -9,6 +9,11 @@
       "email": "shafin@mail.com",
       "password": "$2a$10$bFOMA7i0XCSkhd9W5nXUDuF8pD2TYTe.fMBRzixYts0G8zluzo/we",
       "id": 2
+    },
+    {
+      "email": "shafin2@mail.com",
+      "password": "$2a$10$FTg9Jn9vVQrGjIVmU/dtT.mLNdhIqAbomSCnaLDC8Awsng9fYB4HO",
+      "id": 3
     }
   ],
   "products": [

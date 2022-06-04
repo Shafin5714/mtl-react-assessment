@@ -3,6 +3,7 @@ import {
   CART_REMOVE_ITEM,
   CART_INCREMENT_ITEM,
   CART_DECREMENT_ITEM,
+  ORDER_SUCCESS,
 } from "./cartConstants";
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
@@ -50,6 +51,12 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((x) => x.id !== action.payload),
       };
+    case ORDER_SUCCESS: {
+      return {
+        ...state,
+        cartItems: [],
+      };
+    }
 
     default:
       return state;
