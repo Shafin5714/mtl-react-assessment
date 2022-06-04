@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {Link} from 'react-router-dom'
 
 // Actions
 import { getProductList } from "../Redux/Product/productActions";
@@ -88,6 +89,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Container>
           <Toolbar>
+            <Link to="/" style={{textDecoration:"none",  color: 'white'}}>
             <Typography
               variant="h6"
               noWrap
@@ -96,6 +98,8 @@ export default function PrimarySearchAppBar() {
             >
               The Shop
             </Typography>
+            </Link>
+           
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -114,9 +118,12 @@ export default function PrimarySearchAppBar() {
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                <Badge badgeContent={Number(cartItems && cartItems.length)} color="error">
+                <Link to="/cart"  style={{textDecoration:"none",  color: 'white'}}>
+                 <Badge badgeContent={Number(cartItems && cartItems.length)} color="error">
                   <ShoppingCartIcon />
                 </Badge>
+                </Link>
+               
               </IconButton>
               <IconButton size="large" edge="end" color="inherit">
                 <AccountCircle />
