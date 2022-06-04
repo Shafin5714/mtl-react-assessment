@@ -19,12 +19,11 @@ import Button from "@mui/material/Button";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 // Actions
 import { getProductList } from "../Redux/Product/productActions";
-
-
+import { logout } from "../Redux/User/userActions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,36 +69,90 @@ export default function PrimarySearchAppBar() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
 
+  // Logout
+  const handleLogout = () =>{
+    dispatch(logout())
+    handleMenuClose()
+  }
+
+
+
+
+  // Menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+ 
+
+  
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+
+  const menuId = 'primary-search-account-menu';
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+    
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+    </Menu>
+  );
+
   // State
-  const {cartItems} = useSelector((state)=>state.cart)
+  const { cartItems } = useSelector((state) => state.cart);
+  const {userInfo} = useSelector(state=>state.userLogin)
 
-  console.log(cartItems.length);
+  useEffect(() => {
+    dispatch(getProductList("", "", search));
+  }, [search]);
 
- 
-
-   useEffect(()=>{
-    dispatch(getProductList("","",search))
-   },[search])
-
- 
-  // 
+  //
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Container>
           <Toolbar>
-            <Link to="/" style={{textDecoration:"none",  color: 'white'}}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              The Shop
-            </Typography>
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                The Shop
+              </Typography>
             </Link>
-           
+
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -108,30 +161,48 @@ export default function PrimarySearchAppBar() {
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
                 value={search}
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </Search>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Box alignItems={'center'} sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                <Link to="/cart"  style={{textDecoration:"none",  color: 'white'}}>
-                 <Badge badgeContent={Number(cartItems && cartItems.length)} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
+                <Link
+                  to="/cart"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Badge
+                    badgeContent={Number(cartItems && cartItems.length)}
+                    color="error"
+                  >
+                    <ShoppingCartIcon />
+                  </Badge>
                 </Link>
-               
               </IconButton>
-              <IconButton size="large" edge="end" color="inherit">
+              {userInfo ? <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
                 <AccountCircle />
-              </IconButton>
+              </IconButton> :   <Link to="/login" style={{textDecoration:'none', color:'white'}}>Login</Link>  }
+              
+           
             </Box>
+            
           </Toolbar>
         </Container>
       </AppBar>
+      
+      {renderMenu}
     </Box>
   );
 }

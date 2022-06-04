@@ -5,6 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
 
@@ -25,13 +26,12 @@ export default function ProductCard({
       price,
       category,
       image,
-      
     };
-     dispatch(addToCart(product,1));
+    dispatch(addToCart(product, 1));
   };
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <Link to={`/product/${id}`}>
+      <Link to={`/product/${id}`} style={{ textDecoration: "none" }}>
         <CardMedia
           component="img"
           height="140"
@@ -39,7 +39,12 @@ export default function ProductCard({
           alt="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            style={{ color: "black" }}
+          >
             {name}
           </Typography>
           <Typography gutterBottom component="div">
@@ -52,9 +57,11 @@ export default function ProductCard({
       </Link>
 
       <CardActions>
-        <Button size="small" onClick={handleCart}>
-          Add To Cart
-        </Button>
+        <Box display="flex" justifyContent="center" width="100%">
+          <Button size="small" onClick={handleCart} variant="contained">
+            Add To Cart
+          </Button>
+        </Box>
       </CardActions>
     </Card>
   );

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -10,13 +11,22 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useSelector, useDispatch } from "react-redux";
 // Actins
-import {removeFromCart} from '../Redux/Cart/cartActions'
-import {incrementItem,decrementItem} from '../Redux/Cart/cartActions'
+import { removeFromCart } from "../Redux/Cart/cartActions";
+import { incrementItem, decrementItem } from "../Redux/Cart/cartActions";
 
 export default function Cart() {
   const dispatch = useDispatch();
+  const history = useNavigate();
   // State
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  useEffect(() => {
+    if (!userInfo) {
+      history("/login");
+    }
+  }, [userInfo]);
+
   return (
     <Container>
       <Box component={Paper} my={2}>
@@ -24,43 +34,57 @@ export default function Cart() {
           <Typography variant="h5">Cart</Typography>
         </Box>
         <Divider />
-        {cartItems.map((item, index) => (
-          <Box>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              p={1}
-             
-            >
+        {cartItems.length > 0 ? (
+          cartItems.map((item, index) => (
+            <Box>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                p={1}
+              >
                 <Box width="250px">
-                     <Typography>{item.name}</Typography>
+                  <Typography>{item.name}</Typography>
                 </Box>
-             
-              <Box display="flex" alignItems="center">
-                <IconButton onClick={()=>dispatch(incrementItem(item.id))}>
-                  <AddIcon />
-                </IconButton>
-                <Box>{item.qty}</Box>
-                <IconButton onClick={()=>dispatch(decrementItem(item.id))}>
-                  <RemoveIcon />
-                </IconButton>
-              </Box>
 
-              <Box display="flex" alignItems="center">
-                <Box mr={2}>{item.qty *  item.price}</Box>
-                <IconButton onClick={()=>dispatch(removeFromCart(item.id))}>
-                  <HighlightOffIcon />
-                </IconButton>
+                <Box display="flex" alignItems="center">
+                  <IconButton onClick={() => dispatch(incrementItem(item.id))}>
+                    <AddIcon />
+                  </IconButton>
+                  <Box>{item.qty}</Box>
+                  <IconButton onClick={() => dispatch(decrementItem(item.id))}>
+                    <RemoveIcon />
+                  </IconButton>
+                </Box>
+
+                <Box display="flex" alignItems="center">
+                  <Box mr={2}>{item.qty * item.price}</Box>
+                  <IconButton onClick={() => dispatch(removeFromCart(item.id))}>
+                    <HighlightOffIcon />
+                  </IconButton>
+                </Box>
               </Box>
             </Box>
+          ))
+        ) : (
+          <Box display="flex" justifyContent="center" py={2}>
+            <Typography>No items in cart</Typography>
           </Box>
-        ))}
-        <Divider/>
+        )}
+
+        <Divider />
         <Box display={"flex"} justifyContent="end">
-            <Box width="200px" p={2} alignSelf="end">
-               <Typography align="end">Total: <span style={{fontWeight:'bold'}}>{cartItems.reduce((acc,item)=>acc + (item.qty * item.price),0)}</span> </Typography> 
-            </Box>
+          <Box width="200px" p={2} alignSelf="end">
+            <Typography align="end">
+              Total:{" "}
+              <span style={{ fontWeight: "bold" }}>
+                {cartItems.reduce(
+                  (acc, item) => acc + item.qty * item.price,
+                  0
+                )}
+              </span>{" "}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Container>
