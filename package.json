@@ -22,7 +22,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "api": "json-server --watch db.json --port 4000  -m ./node_modules/json-server-auth"
+    "api": "json-server --watch db.json --port 4000  -m ./node_modules/json-server-auth",
+    "deploy":"npm run build && npm run api"
   },
   "eslintConfig": {
     "extends": [
