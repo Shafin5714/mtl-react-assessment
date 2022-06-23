@@ -14,14 +14,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { ORDER_SUCCESS } from "../Redux/Cart/cartConstants";
 // Actins
 import { removeFromCart } from "../Redux/Cart/cartActions";
-import { incrementItem, decrementItem } from "../Redux/Cart/cartActions";
+// import { incrementItem, decrementItem } from "../Redux/Cart/cartActions";
+
+// New Actions
+import {increment,decrement,removeItem, success} from '../features/cart/cartSlice'
+
 
 export default function Cart() {
   const dispatch = useDispatch();
   const history = useNavigate();
   // State
   const { cartItems } = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!userInfo) {
@@ -32,9 +36,7 @@ export default function Cart() {
   //   checkout
   const handleCheckout = () => {
     history("/success");
-    dispatch({
-      type: ORDER_SUCCESS,
-    });
+    dispatch(success());
   };
 
   return (
@@ -58,18 +60,18 @@ export default function Cart() {
                 </Box>
 
                 <Box display="flex" alignItems="center">
-                  <IconButton onClick={() => dispatch(incrementItem(item.id))}>
+                  <IconButton onClick={() => dispatch(increment(item.id))}>
                     <AddIcon />
                   </IconButton>
                   <Box>{item.qty}</Box>
-                  <IconButton onClick={() => dispatch(decrementItem(item.id))}>
+                  <IconButton onClick={() => dispatch(decrement(item.id))}>
                     <RemoveIcon />
                   </IconButton>
                 </Box>
 
                 <Box display="flex" alignItems="center">
                   <Box mr={2}>{item.qty * item.price}</Box>
-                  <IconButton onClick={() => dispatch(removeFromCart(item.id))}>
+                  <IconButton onClick={() => dispatch(removeItem(item.id))}>
                     <HighlightOffIcon />
                   </IconButton>
                 </Box>

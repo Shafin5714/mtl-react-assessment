@@ -22,8 +22,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
 
 // Actions
-import { getProductList } from "../Redux/Product/productActions";
-import { logout } from "../Redux/User/userActions";
+// import { getProductList } from "../Redux/Product/productActions";
+// import { logout } from "../Redux/User/userActions";
+
+// new Actions
+import { fetchProducts } from "../features/product/productSlice";
+import { logout } from "../features/user/userSlice";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -129,10 +134,10 @@ export default function PrimarySearchAppBar() {
 
   // State
   const { cartItems } = useSelector((state) => state.cart);
-  const {userInfo} = useSelector(state=>state.userLogin)
+  const {userInfo} = useSelector(state=>state.user)
 
   useEffect(() => {
-    dispatch(getProductList("", "", search));
+    dispatch(fetchProducts({search}));
   }, [search]);
 
   //

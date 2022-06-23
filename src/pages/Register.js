@@ -8,15 +8,15 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { register } from "../Redux/User/userActions";
+// import { register } from "../Redux/User/userActions";
+import {register} from '../features/user/userSlice'
 
 export default function Register() {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const userRegister = useSelector((state) => state.userRegister);
-  const { userInfo } = userRegister;
+  const {userInfo} = useSelector((state) => state.user);
   const [errors, setError] = useState({
     email: "",
     password: "",
@@ -48,7 +48,7 @@ export default function Register() {
         email: "This is not a valid email format!",
       }));
     } else {
-      dispatch(register(email, password));
+      dispatch(register({email, password}));
     }
   };
   return (

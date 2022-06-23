@@ -6,13 +6,17 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { getProductDetails } from "../Redux/Product/productActions";
-import { addToCart } from "../Redux/Cart/cartActions";
+// import { getProductDetails } from "../Redux/Product/productActions";
+// import { addToCart } from "../Redux/Cart/cartActions";
+
+// New Actions
+import {getProductDetails} from '../features/product/productSlice'
+import {addItem} from '../features/cart/cartSlice'
 
 export default function Details() {
   const params = useParams();
   const dispatch = useDispatch();
-  const { product } = useSelector((state) => state.products);
+  const { product } = useSelector((state) => state.product);
   // Add To Cart
   const handleCart = () => {
     const item = {
@@ -21,12 +25,13 @@ export default function Details() {
       price: product.price,
       category: product.category,
       image: product.image,
+      qty:1
     };
-    dispatch(addToCart(item, 1));
+    dispatch(addItem(item));
   };
 
   useEffect(() => {
-    dispatch(getProductDetails(params.productId));
+    dispatch(getProductDetails({id:params.productId}));
   }, [params]);
 
   return (

@@ -26,8 +26,9 @@ export default function ProductCard({
       price,
       category,
       image,
+      qty:1
     };
-    dispatch(addToCart(product, 1));
+    dispatch(addToCart(product));
   };
   return (
     <Card sx={{ maxWidth: 345 }}>

@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.2",
     "@mui/material": "^5.8.2",
+    "@reduxjs/toolkit": "^1.8.2",
     "axios": "^0.27.2",
     "json-server": "^0.17.0",
     "json-server-auth": "^2.1.0",
@@ -23,7 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "api": "json-server --watch db.json --port 4000  -m ./node_modules/json-server-auth",
-    "deploy":"npm run build && npm run api"
+    "deploy": "npm run build && npm run api"
   },
   "eslintConfig": {
     "extends": [

@@ -12,14 +12,21 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 // Actions
-import { getProductList } from "../Redux/Product/productActions";
-import { addToCart } from "../Redux/Cart/cartActions";
+// import { getProductList } from "../Redux/Product/productActions";
+// import { addToCart } from "../Redux/Cart/cartActions";
+
+
+
+// New Actions
+import {fetchProducts} from '../features/product/productSlice'
+import {addItem} from '../features/cart/cartSlice'
+
 // Component
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.product);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [category, setCategory] = useState("");
@@ -38,7 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     const getProducts = async () => {
-      dispatch(getProductList(sort,category));
+      dispatch(fetchProducts({sort,category}));
     };
     getProducts();
   }, [category,sort]);
@@ -124,7 +131,7 @@ export default function Home() {
                     image={p.image}
                     category={p.category}
                     price={p.price}
-                    addToCart={addToCart}
+                    addToCart={addItem}
                   />
                 </Grid>
               ))

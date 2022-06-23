@@ -8,14 +8,15 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 // Actions
-import { login } from "../Redux/User/userActions";
+// import { login } from "../Redux/User/userActions";
+import {login} from '../features/user/userSlice'
 
 export default function Register() {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.user);
 
   const [errors, setError] = useState({
     email: "",
@@ -48,7 +49,7 @@ export default function Register() {
         email: "This is not a valid email format!",
       }));
     } else {
-      dispatch(login(email, password));
+      dispatch(login({email, password}));
     }
   };
   return (
